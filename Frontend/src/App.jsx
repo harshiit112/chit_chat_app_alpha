@@ -1,4 +1,3 @@
-import React from 'react'
 import { Route, Routes } from 'react-router'
 import LoginPage from './pages/LoginPage.jsx'
 import HomePage from './pages/HomePage.jsx'
@@ -11,7 +10,7 @@ import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   return (
-    
+
     <div className='h-screen' data-theme="night">
 
       <Routes>
