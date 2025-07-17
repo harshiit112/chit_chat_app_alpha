@@ -18,7 +18,7 @@ const App = () => {
   const { isLoading, authUser } = useAuthUser();
 
   const isAuthenticated = Boolean(authUser);
-  const isOnboarded = authUser?.isOnboarded;
+  const inOnboarded = authUser?.inOnboarded;
 
   if (isLoading) return <PageLoader />;
 
@@ -28,7 +28,7 @@ const App = () => {
         <Route
           path="/"
           element={
-            isAuthenticated && isOnboarded ? (
+            isAuthenticated && inOnboarded ? (
               <HomePage />
             ) : (
               <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
@@ -37,11 +37,23 @@ const App = () => {
         />
         <Route
           path="/signup"
-          element={!isAuthenticated ? <SignUpPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <SignUpPage />
+            ) : (
+              <Navigate to={inOnboarded ? "/" : "/onboarding"} />
+            )
+          }
         />
         <Route
           path="/login"
-          element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <LoginPage />
+            ) : (
+              <Navigate to={inOnboarded ? "/" : "/onboarding"} />
+            )
+          }
         />
         <Route
           path="/notification"
@@ -61,7 +73,7 @@ const App = () => {
           path="/onboarding"
           element={
             isAuthenticated ? (
-              !isOnboarded ? (
+              !inOnboarded ? (
                 <OnboardingPage />
               ) : (
                 <Navigate to="/" />
