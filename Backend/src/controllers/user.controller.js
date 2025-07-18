@@ -11,8 +11,8 @@ import User from "../models/User.js";
         const recommendedUsers = await User.find({
             $and: [
                 {_id: {$ne: currentUserId}},
-                {$id: {$nin: currentUser.friends}},
-                {isonboarded: true} 
+                {_id: {$nin: currentUser.friends}},
+                {inOnboarded: true} 
             ]
         })
         res.status(200).json(recommendedUsers);
