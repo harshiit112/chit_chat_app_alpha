@@ -15,11 +15,10 @@ import useAuthUser from "./hooks/useAuthUser.js";
 import Layout from "./components/Layout.jsx";
 import { useThemeStore } from "./store/useThemeStore.js";
 
-
 const App = () => {
   const { isLoading, authUser } = useAuthUser();
 
-  const {theme} = useThemeStore();
+  const { theme } = useThemeStore();
 
   const isAuthenticated = Boolean(authUser);
   const inOnboarded = authUser?.inOnboarded;
@@ -64,7 +63,13 @@ const App = () => {
         <Route
           path="/notification"
           element={
-            isAuthenticated ? <NotificationsPage /> : <Navigate to="/login" />
+            isAuthenticated && inOnboarded ? (
+              <Layout showSidebar={true}>
+                <NotificationsPage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
           }
         />
         <Route
@@ -72,8 +77,16 @@ const App = () => {
           element={isAuthenticated ? <CallPage /> : <Navigate to="/login" />}
         />
         <Route
-          path="/chat"
-          element={isAuthenticated ? <ChatPage /> : <Navigate to="/login" />}
+          path="/chat/:id"
+          element={
+            isAuthenticated && inOnboarded ? (
+              <Layout showSidebar={false}>
+                <ChatPage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
         />
         <Route
           path="/onboarding"
