@@ -26,13 +26,14 @@ import User from "../models/User.js";
     try {
         const user = await User.findById(req.user.id)
         .select("friends")
-        .populate("friends", "fullName profilePic nativeLanguage learingLearing");
+        .populate("friends", "fullName profilePic nativeLanguage learningLanguage");
 
         res.status(200).json(user.friends);
     } catch (error) {
         console.error("Error in getMyFriends controller", error.message);
         res.status(500).json({ message: "Internal Server Error" });
     }
+
  }
 
  export async function sendFriendRequest(req, res) {
@@ -102,7 +103,7 @@ import User from "../models/User.js";
             $addToSet: { friends: friendRequest.recipient },
         });
 
-        await User.findByIdAndUpdate(friendRequest, recipient, {
+        await User.findByIdAndUpdate(friendRequest.recipient, {
             $addToSet: { friends: friendRequest.sender },
         });
 
